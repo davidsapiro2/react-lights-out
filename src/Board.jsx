@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Cell from "./Cell";
 import "./Board.css";
+import {onOrOff} from "./utils";
 
 /** Game board of Lights out.
  *
@@ -33,7 +34,15 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   function createBoard() {
     let initialBoard = [];
-    // TODO: create array-of-arrays of true/false values
+
+    for (let i = 0; i < nrows; i++) {
+      const row = [];
+      for (let j = 0; j < ncols; j++) {
+        row.push(onOrOff(chanceLightStartsOn));
+      }
+      initialBoard.push(row);
+    }
+    console.log("initialBoard", initialBoard);
     return initialBoard;
   }
 
