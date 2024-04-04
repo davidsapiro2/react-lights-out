@@ -35,7 +35,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   function createBoard() {
     return createInitialBoard(nrows, ncols, chanceLightStartsOn);
   }
-
+  console.log(board);
   /** check the board in state to determine whether the player has won. */
   function hasWon(board) {
     return winCheck(board);
@@ -72,9 +72,11 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
   // if the game is won, just show a winning msg & render nothing else
   return(
-    hasWon(board) ? <p>You won</p> : board.forEach((row, i) =>
-    {row.forEach((cell, j) => <div><Cell flipCellsAroundMe={() => flipCellsAround("0-0")} /></div>)}
+    hasWon(board)
+    ? <p>You won</p>
+    :
 
+    board.forEach((row, i) => row.forEach((cell, j) => {<Cell flipCellsAroundMe={() => flipCellsAround(`${i}-${j}`)} isLit={cell}/>}))
 
   )
 
