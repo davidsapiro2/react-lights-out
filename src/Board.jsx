@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Cell from "./Cell";
 import "./Board.css";
-import {onOrOff} from "./utils";
+import {createInitialBoard, onOrOff, winCheck} from "./utils";
 
 /** Game board of Lights out.
  *
@@ -33,21 +33,12 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   function createBoard() {
-    let initialBoard = [];
-
-    for (let i = 0; i < nrows; i++) {
-      const row = [];
-      for (let j = 0; j < ncols; j++) {
-        row.push(onOrOff(chanceLightStartsOn));
-      }
-      initialBoard.push(row);
-    }
-    console.log("initialBoard", initialBoard);
-    return initialBoard;
+    return createInitialBoard(nrows, ncols, chanceLightStartsOn);
   }
 
-  function hasWon() {
-    // TODO: check the board in state to determine whether the player has won.
+  /** check the board in state to determine whether the player has won. */
+  function hasWon(board) {
+    return winCheck(board);
   }
 
   function flipCellsAround(coord) {
@@ -64,13 +55,28 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
       // TODO: Make a (deep) copy of the oldBoard
 
+      const boardCopy = structuredClone(oldBoard);
+
       // TODO: in the copy, flip this cell and the cells around it
+      flipCell(y, x, boardCopy);
+      flipCell(y + 1, x, boardCopy);
+      flipCell(y - 1, x, boardCopy);
+      flipCell(y, x + 1, boardCopy);
+      flipCell(y, x - 1, boardCopy);
 
       // TODO: return the copy
+
+      return boardCopy;
     });
   }
 
   // if the game is won, just show a winning msg & render nothing else
+  return(
+    hasWon(board) ? <p>You won</p> : board.forEach((row, i) =>
+    {row.forEach((cell, j) => <div><Cell flipCellsAroundMe={() => flipCellsAround("0-0")} /></div>)}
+
+
+  )
 
   // TODO
 
