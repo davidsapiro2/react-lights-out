@@ -35,7 +35,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   function createBoard() {
     return createInitialBoard(nrows, ncols, chanceLightStartsOn);
   }
-  console.log(board);
+
   /** check the board in state to determine whether the player has won. */
   function hasWon(board) {
     return winCheck(board);
@@ -53,18 +53,15 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
         }
       };
 
-      // TODO: Make a (deep) copy of the oldBoard
-
+      // Make a (deep) copy of the oldBoard
       const boardCopy = structuredClone(oldBoard);
 
-      // TODO: in the copy, flip this cell and the cells around it
+      // in the copy, flip this cell and the cells around it
       flipCell(y, x, boardCopy);
       flipCell(y + 1, x, boardCopy);
       flipCell(y - 1, x, boardCopy);
       flipCell(y, x + 1, boardCopy);
       flipCell(y, x - 1, boardCopy);
-
-      // TODO: return the copy
 
       return boardCopy;
     });
@@ -72,19 +69,20 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
   // if the game is won, just show a winning msg & render nothing else
   return(
-    hasWon(board)
-    ? <p>You won</p>
-    :
-
-    board.forEach((row, i) => row.forEach((cell, j) => {<Cell flipCellsAroundMe={() => flipCellsAround(`${i}-${j}`)} isLit={cell}/>}))
-
+   (hasWon(board))
+   ?<h3>You win!</h3>
+   :<table>
+      <tbody>
+         {board.map((row, i) =>
+            <tr>
+            {row.map((cell, j) =>
+              <Cell flipCellsAroundMe={() => flipCellsAround(`${i}-${j}`)} isLit={cell} />
+            )}
+            </tr>
+          )}
+      </tbody>
+    </table>
   )
-
-  // TODO
-
-  // make table board
-
-  // TODO
 }
 
 export default Board;
